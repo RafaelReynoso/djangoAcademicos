@@ -1,0 +1,45 @@
+{% extends './Base.html' %}
+
+{% block title %}Gestión de Cursos{% endblock %}
+
+{% block body %}
+<h2>Buscar Docentes</h2>
+<form class="d-flex" role="search" method="POST" name="nombre" >
+    {% csrf_token %}
+    <input class="form-control me-2" type="date" placeholder="Search" aria-label="Search" name="fecha_ingreso">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+
+<div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+    <h2>Lista de Datos</h2>
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Fecha de Ingreso</th>
+                <th>DNI</th>
+                <th>Telefono</th>
+                <th colspan="2">Opciones de Manejo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr>
+                <td>{{ d.idDocente }}</td>
+                <td>{{ d.nombre }}</td>
+                <td>{{ d.apellido }}</td>
+                <td>{{ d.fecha_ingreso }}</td>
+                <td>{{ d.dni }}</td>
+                <td>{{ d.telefono }}</td>
+                <td><a href="ediciondocente/{{ d.idDocente }}" class="btn btn-info">Editar</a></td>
+                <td><a href="eliminardocente/{{ d.idDocente }}" class="btn btn-danger">Eliminar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+{% endblock %}
