@@ -1,6 +1,22 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.db.models import Q
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+
+def iniciar_sesion(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            CursoListado = Curso.objects.order_by('codigo')
+            return render(request, 'GestionCursos.html', {"cursos":CursoListado}) 
+        else:
+            # El usuario no ha proporcionado credenciales válidas
+            pass
+    return render(request,'Login.html')
 
 # Create your views here.
 
@@ -147,3 +163,59 @@ def buscarespecialidad(request):
     else:
         especialidadListado = Especialidad.objects.all()
         return render(request, "BuscarEspecialidad.html",{"data":especialidadListado})
+    
+
+
+
+def alumno(request):
+    alumnosListado = Alumno.objects.all()
+    return render(request, "GestionAlumnos.html",{"alumnos":alumnosListado})
+
+def registraralumnos(request):
+    codigo = request.POST["txtcodigo"]
+    apellido = request.POST["txtapellido"]
+    nombre = request.POST["txtnombre"]
+    dni = request.POST["numdni"]
+    fecha_nacimiento = request.POST["txtfecha_nacimiento"]
+    telefono = request.POST["numtelefono"]
+
+    alumnos = Alumno.objects.create(idAlumno=codigo, nombre=nombre, apellido=apellido, fecha_nacimiento = fecha_nacimiento, dni = dni, telefono = telefono)
+    return redirect('/alumnos')
+
+def buscaralumnos(request):
+    if request.method == "POST":
+        buscarnombre = request.POST.get('nombre')
+        busqueda=Alumno.objects.filter(nombre__icontains=buscarnombre)
+        return render(request,'BuscarAlumnos.html',{"data":busqueda})
+    else:
+        alumnosListado = Alumno.objects.all()
+        return render(request, "BuscarAlumnos.html",{"data":alumnosListado})
+    
+def edicionalumno(request, codigo):
+    alumno = Alumno.objects.get(idAlumno = codigo)
+    return render(request, "EdicionAlumnos.html",{"alumno":alumno})
+    
+def editaralumno(request):
+    codigo = request.POST["txtcodigo"]
+    apellido = request.POST["txtapellido"]
+    nombre = request.POST["txtnombre"]
+    dni = request.POST["numdni"]
+    fecha_nacimiento = request.POST["txtfecha_nacimiento"]
+    telefono = request.POST["numtelefono"]
+
+    alumno = Alumno.objects.get(idAlumno = codigo)
+    alumno.nombre = nombre
+    alumno.apellido = apellido
+    alumno.fecha_nacimiento = fecha_nacimiento
+    alumno.dni = dni
+    alumno.telefono = telefono
+    alumno.save()
+
+    return redirect('/alumnos')
+
+def eliminaralumno(request,codigo):
+    alumno = Alumno.objects.get(idAlumno = codigo)
+    alumno.delete()
+    return redirect('/alumnos')
+
+

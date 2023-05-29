@@ -29,5 +29,19 @@ class Curso(models.Model):
     def __str__(self):
         return self.nombre
 
+class Alumno(models.Model):
+    idAlumno = models.CharField(primary_key= True,max_length = 6)
+    apellido = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=50)
+    dni = models.IntegerField()
+    fecha_nacimiento = models.DateField()
+    telefono = models.IntegerField()
+    
+    def __str__(self):
+        return self.nombre
+
+
+
+
   
 

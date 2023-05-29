@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\Rafael\Desktop\TECSUP\TECSUP Ciclo IV\Semana 10\Desarrollo de Aplicaciones Empresariales\GestionDeDatos\virtual
+set VIRTUAL_ENV=C:\Users\Alumno\Desktop\Nueva carpeta\djangoAcademicos\virtual
 
 if not defined PROMPT set PROMPT=$P$G
 
